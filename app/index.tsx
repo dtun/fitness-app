@@ -1,3 +1,5 @@
+import { protocolMap } from "@/constants/protocol";
+import { Link } from "expo-router";
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -17,17 +19,20 @@ export default function HomeScreen() {
           ] as const
         }
         renderItem={({ item }) => (
-          <View
-            style={[
-              {
-                borderColor: isToday(item.day) ? "red" : "transparent",
-                borderWidth: 4,
-              },
-            ]}
-          >
-            <Text>{item.day}</Text>
-            <Text>{protocolMap[item.protocol].title}</Text>
-          </View>
+          <Link href={`/protocol/${item.protocol}`}>
+            <View
+              style={[
+                {
+                  borderColor: isToday(item.day) ? "red" : "transparent",
+                  borderWidth: 4,
+                  width: "100%",
+                },
+              ]}
+            >
+              <Text>{item.day}</Text>
+              <Text>{protocolMap[item.protocol].title}</Text>
+            </View>
+          </Link>
         )}
       />
     </SafeAreaView>
@@ -37,34 +42,3 @@ export default function HomeScreen() {
 function isToday(day: string) {
   return day === new Date().toLocaleDateString("en-US", { weekday: "long" });
 }
-
-let protocolMap = {
-  "1": {
-    title: "Long Endurance",
-    protocol: "1",
-  },
-  "2": {
-    title: "Legs Resistance",
-    protocol: "2",
-  },
-  "3": {
-    title: "Heat/Cold Exposure & Recovery",
-    protocol: "3",
-  },
-  "4": {
-    title: "Torso & Neck Resistance",
-    protocol: "4",
-  },
-  "5": {
-    title: "Cardio",
-    protocol: "5",
-  },
-  "6": {
-    title: "High Intensity Interval Training",
-    protocol: "6",
-  },
-  "7": {
-    title: "Arms, Neck, & Calves",
-    protocol: "7",
-  },
-};
