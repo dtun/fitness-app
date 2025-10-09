@@ -8,7 +8,9 @@ export default function ProtocolScreen() {
 
   return (
     <View>
-      <Text>{protocol.title}</Text>
+      <Text>{protocol.focus}</Text>
+      <Text>{protocol.description.join("\n\n")}</Text>
+      <Text>{protocol.exerciseExamples.join("\n\n")}</Text>
     </View>
   );
 }

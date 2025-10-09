@@ -30,7 +30,7 @@ export default function HomeScreen() {
               ]}
             >
               <Text>{item.day}</Text>
-              <Text>{protocolMap[item.protocol].title}</Text>
+              <Text>{protocolMap[item.protocol].focus}</Text>
             </View>
           </Link>
         )}
