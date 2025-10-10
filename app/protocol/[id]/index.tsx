@@ -3,12 +3,12 @@ import { generateWorkout } from "@/lib/ai-service";
 import { usePathname } from "expo-router";
 import { useState } from "react";
 import { FlatList } from "react-native";
-import { Button, Card, Input, Spinner, Text, View } from "tamagui";
+import { Button, Card, Input, Slider, Spinner, Text, View } from "tamagui";
 
 export default function ProtocolScreen() {
   let id = usePathname().split("/").pop();
   let protocol = protocolMap[id as keyof typeof protocolMap];
-  let [time, setTime] = useState("");
+  let [time, setTime] = useState("30");
   let [equipment, setEquipment] = useState("");
   let [workout, setWorkout] = useState("");
   let [isGenerating, setIsGenerating] = useState(false);
@@ -25,7 +25,7 @@ export default function ProtocolScreen() {
         protocolFocus: protocol.focus,
         protocolDescription: protocol.description,
         protocolExerciseExamples: protocol.exerciseExamples,
-        time,
+        time: time ? `${time} minutes` : undefined,
         equipment,
       });
 
@@ -47,12 +47,20 @@ export default function ProtocolScreen() {
             <Card backgroundColor="$background" flex={1} width="100%">
               <Card.Header gap="$2">
                 <Text fontWeight="bold">{protocol.focus}</Text>
-
-                <Input
-                  placeholder="Time available (optional, e.g., '45 min')"
-                  value={time}
-                  onChangeText={setTime}
-                />
+                <Text>Time available: {time} min</Text>
+                <Slider
+                  marginVertical="$4"
+                  max={120}
+                  min={10}
+                  onValueChange={(update) => setTime(update.toString())}
+                  step={5}
+                  value={[Number(time)]}
+                >
+                  <Slider.Track>
+                    <Slider.TrackActive />
+                  </Slider.Track>
+                  <Slider.Thumb size="$3" index={0} circular />
+                </Slider>
 
                 <Input
                   placeholder="Equipment (optional, e.g., 'Dumbbells, Resistance Bands')"
