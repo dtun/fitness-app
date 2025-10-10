@@ -5,7 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ padding: 8 }}>
+      <Link href="/settings" asChild>
+        <Text style={{}}>Settings</Text>
+      </Link>
       <FlatList
         data={
           [

@@ -28,6 +28,10 @@ export default function RootLayout() {
           name="protocol/[id]/index"
           options={{ title: "Protocol", headerBackTitle: "Back" }}
         />
+        <Stack.Screen
+          name="settings"
+          options={{ title: "Settings", headerBackTitle: "Back" }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
