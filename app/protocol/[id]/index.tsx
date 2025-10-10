@@ -2,14 +2,8 @@ import { protocolMap } from "@/constants/protocol";
 import { generateWorkout } from "@/lib/ai-service";
 import { usePathname } from "expo-router";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Button,
-  FlatList,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList } from "react-native";
+import { Button, Card, Input, Spinner, Text, View } from "tamagui";
 
 export default function ProtocolScreen() {
   let id = usePathname().split("/").pop();
@@ -50,46 +44,40 @@ export default function ProtocolScreen() {
       data={[
         {
           render: (
-            <View style={{ gap: 16, padding: 8 }}>
-              <Text>{protocol.focus}</Text>
+            <Card backgroundColor="$background" flex={1} width="100%">
+              <Card.Header gap="$2">
+                <Text fontWeight="bold">{protocol.focus}</Text>
 
-              <View style={{ gap: 8 }}>
-                <Text>Generate Personalized Workout</Text>
-
-                <TextInput
+                <Input
                   placeholder="Time available (optional, e.g., '45 min')"
                   value={time}
                   onChangeText={setTime}
-                  style={{ borderWidth: 1, padding: 8 }}
                 />
 
-                <TextInput
+                <Input
                   placeholder="Equipment (optional, e.g., 'Dumbbells, Resistance Bands')"
                   value={equipment}
                   onChangeText={setEquipment}
-                  style={{ borderWidth: 1, padding: 8 }}
                 />
 
-                <Button
-                  title={isGenerating ? "Generating..." : "Generate Workout"}
-                  onPress={handleGenerateWorkout}
-                  disabled={isGenerating}
-                />
+                <Button onPress={handleGenerateWorkout} disabled={isGenerating}>
+                  {isGenerating ? "Generating..." : "Generate Workout"}
+                </Button>
 
-                {isGenerating && <ActivityIndicator size="large" />}
+                {isGenerating ? <Spinner size="large" /> : null}
 
-                {error && <Text>{error}</Text>}
+                {error ? <Text>{error}</Text> : null}
 
-                {workout && (
-                  <View style={{ gap: 8 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                {workout ? (
+                  <View gap="$3">
+                    <Text fontSize="$2" fontWeight="bold">
                       Your Workout Plan:
                     </Text>
-                    <Text>{workout}</Text>
+                    <Text fontSize="$2">{workout}</Text>
                   </View>
-                )}
-              </View>
-            </View>
+                ) : null}
+              </Card.Header>
+            </Card>
           ),
         },
       ]}
