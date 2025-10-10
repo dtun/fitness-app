@@ -1,15 +1,14 @@
 import { protocolMap } from "@/constants/protocol";
 import { Link } from "expo-router";
-import { FlatList, Text, View } from "react-native";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Card, Text } from "tamagui";
 
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ padding: 8 }}>
-      <Link href="/settings" asChild>
-        <Text style={{}}>Settings</Text>
-      </Link>
       <FlatList
+        contentContainerStyle={{ gap: 8 }}
         data={
           [
             { day: "Sunday", protocol: "1" },
@@ -21,20 +20,25 @@ export default function HomeScreen() {
             { day: "Saturday", protocol: "7" },
           ] as const
         }
+        ListHeaderComponent={
+          <Link href="/settings" asChild>
+            <Text style={{}}>Settings</Text>
+          </Link>
+        }
         renderItem={({ item }) => (
           <Link href={`/protocol/${item.protocol}`}>
-            <View
-              style={[
-                {
-                  borderColor: isToday(item.day) ? "red" : "transparent",
-                  borderWidth: 4,
-                  width: "100%",
-                },
-              ]}
+            <Card
+              backgroundColor="$background"
+              borderColor={isToday(item.day) ? "$accent1" : "transparent"}
+              borderWidth="$1.5"
+              width="100%"
             >
-              <Text>{item.day}</Text>
-              <Text>{protocolMap[item.protocol].focus}</Text>
-            </View>
+              <Card.Header>
+                <Text fontWeight="bold">{item.day}</Text>
+                <Text fontSize="$2">{protocolMap[item.protocol].focus}</Text>
+              </Card.Header>
+              <Card.Footer></Card.Footer>
+            </Card>
           </Link>
         )}
       />
