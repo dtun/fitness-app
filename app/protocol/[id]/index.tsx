@@ -53,7 +53,7 @@ export default function ProtocolScreen() {
             <View style={{ gap: 16, padding: 8 }}>
               <Text>{protocol.focus}</Text>
 
-              <View>
+              <View style={{ gap: 8 }}>
                 <Text>Generate Personalized Workout</Text>
 
                 <TextInput
