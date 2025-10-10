@@ -2,6 +2,7 @@ import { workoutPrompt } from "@/prompts/workout";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";
+import "expo-sqlite/localStorage/install";
 
 interface GenerateWorkoutParams {
   protocolId: string;
@@ -27,8 +28,16 @@ function getAPIKey(provider: AIProvider): string {
       : process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
+    try {
+      apiKey = globalThis.localStorage.getItem("ai_api_key") || undefined;
+    } catch (error) {
+      console.error("Error reading from localStorage:", error);
+    }
+  }
+
+  if (!apiKey) {
     throw new Error(
-      `${provider.toUpperCase()}_API_KEY not found. Please set it in .env.local`
+      `${provider.toUpperCase()}_API_KEY not found. Please set it in Settings or .env.local`
     );
   }
 
@@ -92,10 +101,27 @@ export async function generateWorkout({
   protocolExerciseExamples,
   time,
   equipment,
-  provider = "openai",
+  provider,
 }: GenerateWorkoutParams): Promise<string> {
   try {
-    let model = createAIModel(provider);
+    let selectedProvider = provider;
+
+    if (!selectedProvider) {
+      try {
+        let storedProvider = globalThis.localStorage.getItem("ai_provider");
+        if (storedProvider === "openai" || storedProvider === "anthropic") {
+          selectedProvider = storedProvider;
+        }
+      } catch (error) {
+        console.error("Error reading provider from localStorage:", error);
+      }
+    }
+
+    if (!selectedProvider) {
+      selectedProvider = "openai";
+    }
+
+    let model = createAIModel(selectedProvider);
 
     let prompt = createWorkoutPrompt(
       protocolId,
