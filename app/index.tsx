@@ -7,7 +7,7 @@ import { Card, Text, View, XStack } from "tamagui";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView style={{ padding: 8 }}>
+    <SafeAreaView edges={["bottom"]} style={{ padding: 8 }}>
       <FlatList
         contentContainerStyle={{ gap: 8 }}
         data={
@@ -20,11 +20,6 @@ export default function HomeScreen() {
             { day: "Friday", protocol: "6", icons: ["dumbbell", "heart"] },
             { day: "Saturday", protocol: "7", icons: ["dumbbell"] },
           ] as const
-        }
-        ListHeaderComponent={
-          <Link href="/settings" asChild>
-            <Text style={{}}>Settings</Text>
-          </Link>
         }
         renderItem={({ item }) => (
           <Link href={`/protocol/${item.protocol}`}>
