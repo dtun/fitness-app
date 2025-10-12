@@ -9,7 +9,8 @@ export default function HomeScreen() {
   return (
     <SafeAreaView edges={["bottom"]} style={{ padding: 8 }}>
       <FlatList
-        contentContainerStyle={{ gap: 8 }}
+        contentContainerStyle={{ gap: 8, height: "100%" }}
+        style={{ height: "25%" }}
         data={
           [
             { day: "Sunday", protocol: "1", icons: ["heart"] },
@@ -21,16 +22,16 @@ export default function HomeScreen() {
             { day: "Saturday", protocol: "7", icons: ["dumbbell"] },
           ] as const
         }
+        horizontal
         renderItem={({ item }) => (
           <Link href={`/protocol/${item.protocol}`}>
             <Card
               backgroundColor="$background"
               borderColor={isToday(item.day) ? "$accent1" : "transparent"}
               borderWidth="$1.5"
-              width="100%"
             >
               <Card.Header flex={1} gap="$2">
-                <XStack height="$2" alignItems="center" gap="$2" width="100%">
+                <XStack height="$2" alignItems="center" gap="$2">
                   <Text fontWeight="bold">{item.day}</Text>
                   {isToday(item.day) ? (
                     <Text
@@ -44,7 +45,6 @@ export default function HomeScreen() {
                       Today
                     </Text>
                   ) : null}
-
                   <View
                     flexDirection="row"
                     flex={1}
@@ -67,8 +67,9 @@ export default function HomeScreen() {
             </Card>
           </Link>
         )}
-        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
+      <View style={{ flex: 1 }}></View>
     </SafeAreaView>
   );
 }
