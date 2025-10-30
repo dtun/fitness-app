@@ -99,7 +99,7 @@ export function Protocol({ id }: { id: string }) {
                     gap="$3"
                     marginHorizontal={2}
                   >
-                    <View flex={1} alignItems="center" borderWidth={1}>
+                    <View flex={1} alignItems="center">
                       <Text
                         color={isToday(d) ? "red" : "#ccc"}
                         flexDirection="row"
