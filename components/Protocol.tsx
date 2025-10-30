@@ -1,10 +1,9 @@
+import { Calendar } from "@/components/Calendar";
 import { protocolMap } from "@/constants/protocol";
 import { generateWorkout } from "@/lib/ai-service";
-import { addDays, formatDate, isToday, startOfWeek } from "date-fns";
 import { useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { Button, Card, Input, Slider, Spinner, Text, View } from "tamagui";
-import { IconSymbol } from "./ui/icon-symbol";
 
 export function Protocol({ id }: { id: string }) {
   let protocol = protocolMap[id as keyof typeof protocolMap];
@@ -39,87 +38,13 @@ export function Protocol({ id }: { id: string }) {
     }
   }
 
-  let thisWeek = startOfWeek(new Date(), {
-    weekStartsOn: 0,
-  });
-  let days = [1, 2, 3, 4, 5, 6, 7].map((d) => addDays(thisWeek, d - 1));
-
   return (
     <FlatList
       data={[
         {
           render: (
             <Card backgroundColor="$background" flex={1} width="100%">
-              <View
-                flexDirection="row"
-                width={Dimensions.get("screen").width}
-                justifyContent="space-between"
-                paddingHorizontal={8}
-              >
-                <View gap="$2" flexDirection="row" paddingVertical={8}>
-                  <Text flexDirection="row" fontSize="$10">
-                    {formatDate(new Date(), "ccc")}
-                  </Text>
-                  <View
-                    alignSelf="center"
-                    height={20}
-                    width={20}
-                    backgroundColor="red"
-                    borderRadius={24}
-                  />
-                </View>
-                <View
-                  gap="$1"
-                  paddingVertical={8}
-                  justifyContent="center"
-                  alignItems="flex-end"
-                >
-                  <Text fontWeight="bold" flexDirection="row" fontSize="$4">
-                    {`${formatDate(new Date(), "MMMM")} ${formatDate(
-                      new Date(),
-                      "dd"
-                    )}`}
-                  </Text>
-                  <Text flexDirection="row" fontSize="$4">
-                    {formatDate(new Date(), "yyyy")}
-                  </Text>
-                </View>
-              </View>
-              <View flexDirection="row" width={Dimensions.get("screen").width}>
-                {days.map((d) => (
-                  <View
-                    key={d.getDay()}
-                    flexDirection="column"
-                    flex={1}
-                    alignItems="center"
-                    borderColor={isToday(d) ? "#ccc" : "transparent"}
-                    borderWidth={2}
-                    borderRadius={48}
-                    paddingVertical={8}
-                    gap="$3"
-                    marginHorizontal={2}
-                  >
-                    <View flex={1} alignItems="center">
-                      <Text
-                        color={isToday(d) ? "red" : "#ccc"}
-                        flexDirection="row"
-                        fontWeight="bold"
-                      >
-                        {formatDate(d, "ccc")}
-                      </Text>
-                      <Text
-                        color={isToday(d) ? "unset" : "#ccc"}
-                        fontWeight="bold"
-                        flexDirection="row"
-                        fontSize="$7"
-                      >
-                        {formatDate(d, "d")}
-                      </Text>
-                    </View>
-                    <IconSymbol color="#ccc" name="circle" size={32} />
-                  </View>
-                ))}
-              </View>
+              <Calendar />
               <Card.Header gap="$2">
                 <Text fontWeight="bold">{protocol.focus}</Text>
                 <Text>Time available: {time} min</Text>
